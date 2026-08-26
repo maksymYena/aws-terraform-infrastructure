@@ -4,6 +4,7 @@ data "archive_file" "lambda_zip" {
   output_path = "${path.module}/lambda_function_payload.zip"
 }
 
+data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "lambda_assume_role" {
   statement {
@@ -20,7 +21,6 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
-
 data "aws_iam_policy_document" "lambda_permissions" {
   statement {
     effect = "Allow"
@@ -31,7 +31,9 @@ data "aws_iam_policy_document" "lambda_permissions" {
       "sqs:ReceiveMessage"
     ]
 
-    resources = ["*"]
+    resources = [
+      var.sqs_queue_arn
+    ]
   }
 
   statement {
@@ -45,7 +47,10 @@ data "aws_iam_policy_document" "lambda_permissions" {
       "dynamodb:BatchGetItem"
     ]
 
-    resources = ["*"]
+    resources = [
+      "arn:aws:dynamodb:${var.region_name}:${data.aws_caller_identity.current.account_id}:table/${var.dynamodb_name}",
+      "arn:aws:dynamodb:${var.region_name}:${data.aws_caller_identity.current.account_id}:table/${var.dynamodb_name}/index/*"
+    ]
   }
 
   statement {
@@ -76,15 +81,27 @@ data "aws_iam_policy_document" "lambda_permissions" {
     effect = "Allow"
 
     actions = [
-      "logs:CreateLogGroup",
+      "logs:CreateLogGroup"
+    ]
+
+    resources = [
+      "arn:aws:logs:${var.region_name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/image-recognition-lambda"
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+
+    actions = [
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
 
-    resources = ["*"]
+    resources = [
+      "arn:aws:logs:${var.region_name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/image-recognition-lambda:*"
+    ]
   }
 }
-
 
 data "aws_iam_policy_document" "ecs_execution_assume_role" {
   statement {

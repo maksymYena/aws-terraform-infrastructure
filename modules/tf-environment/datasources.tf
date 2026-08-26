@@ -55,6 +55,31 @@ data "aws_iam_policy_document" "image_bucket_policy" {
       "${aws_s3_bucket.image_bucket.arn}/*"
     ]
   }
+
+  statement {
+    sid    = "DenyInsecureTransport"
+    effect = "Deny"
+
+    actions = [
+      "s3:*"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.bucket_name}",
+      "arn:aws:s3:::${var.bucket_name}/*"
+    ]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    condition {
+      test     = "Bool"
+      variable = "aws:SecureTransport"
+      values   = ["false"]
+    }
+  }
 }
 
 

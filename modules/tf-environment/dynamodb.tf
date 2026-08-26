@@ -1,8 +1,18 @@
+# tfsec:ignore:aws-dynamodb-table-customer-key
+# AWS-managed encryption is sufficient for this training environment.
 resource "aws_dynamodb_table" "recognition_results" {
   name           = "recognition-results"
   billing_mode   = "PROVISIONED"
   read_capacity  = 5
   write_capacity = 5
+
+  point_in_time_recovery {
+    enabled = true
+  }
+  #tfsec:ignore:aws-dynamodb-table-customer-key
+  server_side_encryption {
+    enabled = true
+  }
 
   hash_key  = "ImageName"
   range_key = "LabelValue"

@@ -69,6 +69,7 @@ resource "aws_security_group" "ecs_service_sg" {
 resource "aws_vpc_security_group_ingress_rule" "ecs_service_all_inbound" {
   security_group_id = aws_security_group.ecs_service_sg.id
 
+  description = "Allow inbound traffic to ECS service"
   cidr_ipv4   = "0.0.0.0/0"
   ip_protocol = "-1"
 }
@@ -76,6 +77,7 @@ resource "aws_vpc_security_group_ingress_rule" "ecs_service_all_inbound" {
 resource "aws_vpc_security_group_egress_rule" "ecs_service_all_outbound" {
   security_group_id = aws_security_group.ecs_service_sg.id
 
+  description = "Allow outbound traffic from ECS service"
   cidr_ipv4   = "0.0.0.0/0"
   ip_protocol = "-1"
 }

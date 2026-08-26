@@ -22,19 +22,19 @@ resource "aws_security_group" "logs_endpoint_sg" {
 resource "aws_vpc_security_group_ingress_rule" "ecr_dkr_endpoint_https_a" {
   security_group_id = aws_security_group.ecr_dkr_endpoint_sg.id
   cidr_ipv4         = aws_default_subnet.default_subnet_a.cidr_block
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
+  description       = "Allow HTTPS from default subnet A"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ecr_dkr_endpoint_https_b" {
   security_group_id = aws_security_group.ecr_dkr_endpoint_sg.id
   cidr_ipv4         = aws_default_subnet.default_subnet_b.cidr_block
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
+  description       = "Allow HTTPS from default subnet B"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
 }
 
 
@@ -43,19 +43,19 @@ resource "aws_vpc_security_group_ingress_rule" "ecr_dkr_endpoint_https_b" {
 resource "aws_vpc_security_group_ingress_rule" "ecr_api_endpoint_https_a" {
   security_group_id = aws_security_group.ecr_api_endpoint_sg.id
   cidr_ipv4         = aws_default_subnet.default_subnet_a.cidr_block
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
+  description       = "Allow HTTPS from default subnet A"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ecr_api_endpoint_https_b" {
   security_group_id = aws_security_group.ecr_api_endpoint_sg.id
   cidr_ipv4         = aws_default_subnet.default_subnet_b.cidr_block
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
+  description       = "Allow HTTPS from default subnet A"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
 }
 
 
@@ -64,24 +64,24 @@ resource "aws_vpc_security_group_ingress_rule" "ecr_api_endpoint_https_b" {
 resource "aws_vpc_security_group_ingress_rule" "logs_endpoint_https_a" {
   security_group_id = aws_security_group.logs_endpoint_sg.id
   cidr_ipv4         = aws_default_subnet.default_subnet_a.cidr_block
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
+  description       = "Allow HTTPS from default subnet A"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_security_group_ingress_rule" "logs_endpoint_https_b" {
   security_group_id = aws_security_group.logs_endpoint_sg.id
   cidr_ipv4         = aws_default_subnet.default_subnet_b.cidr_block
-
-  from_port   = 443
-  to_port     = 443
-  ip_protocol = "tcp"
+  description       = "Allow HTTPS from default subnet A"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id            = data.aws_vpc.default.id
-  service_name      = "com.amazonaws.${data.aws_region.current.region}.ecr.dkr"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.ecr.dkr"
   vpc_endpoint_type = "Interface"
 
   private_dns_enabled = true
@@ -98,7 +98,7 @@ resource "aws_vpc_endpoint" "ecr_dkr" {
 
 resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id            = data.aws_vpc.default.id
-  service_name      = "com.amazonaws.${data.aws_region.current.region}.ecr.api"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.ecr.api"
   vpc_endpoint_type = "Interface"
 
   private_dns_enabled = true
@@ -115,7 +115,7 @@ resource "aws_vpc_endpoint" "ecr_api" {
 
 resource "aws_vpc_endpoint" "logs" {
   vpc_id            = data.aws_vpc.default.id
-  service_name      = "com.amazonaws.${data.aws_region.current.region}.logs"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.logs"
   vpc_endpoint_type = "Interface"
 
   private_dns_enabled = true
@@ -132,7 +132,7 @@ resource "aws_vpc_endpoint" "logs" {
 
 resource "aws_vpc_endpoint" "s3" {
   vpc_id            = data.aws_vpc.default.id
-  service_name      = "com.amazonaws.${data.aws_region.current.region}.s3"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = [
@@ -142,7 +142,7 @@ resource "aws_vpc_endpoint" "s3" {
 
 resource "aws_vpc_endpoint" "dynamodb" {
   vpc_id            = data.aws_vpc.default.id
-  service_name      = "com.amazonaws.${data.aws_region.current.region}.dynamodb"
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.dynamodb"
   vpc_endpoint_type = "Gateway"
 
   route_table_ids = [

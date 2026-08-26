@@ -1,0 +1,35 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+
+# Terraform generated plans
+tfplan
+destroy.tfplan
+lambda_function_payload.zip
+
+# Generated Lambda package
+lambda_function_payload.zipó
+
+# Terraform variable files with secrets
+*.tfvars
+*.tfvars.json
+
+# Temporary test files
+expression-values.json
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# PyCharm
+.idea/
+
+# Environment/secrets
+.env
+.env.*

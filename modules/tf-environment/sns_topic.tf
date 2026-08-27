@@ -1,8 +1,11 @@
 # tfsec:ignore:aws-sns-topic-encryption-use-cmk
 # AWS-managed SNS KMS key is sufficient for this training environment.
 resource "aws_sns_topic" "image_notification" {
-  name              = var.sns_name
-  kms_master_key_id = "alias/aws/sns" #tfsec:ignore:aws-sns-topic-encryption-use-cmk
+  name = var.sns_name
+  tags = {
+    Environment = var.environment
+    Component   = "messaging-topic"
+  }
 }
 
 resource "aws_sns_topic_policy" "image_notification_policy" {

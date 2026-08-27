@@ -9,6 +9,10 @@ resource "aws_s3_bucket" "image_bucket" {
   #checkov:skip=CKV_AWS_145:AES256 server-side encryption is used; customer-managed KMS is outside the scope of this training environment.
 
   bucket = var.bucket_name
+  tags = {
+    Environment = var.environment
+    Component   = "storage"
+  }
 }
 
 # AES256 server-side encryption is sufficient for this training environment.

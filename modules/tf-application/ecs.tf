@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "application_cluster" {
-  name = "image-recognition-cluster"
+  name = "image-recognition-cluster-${var.environment}"
 
   setting {
     name  = "containerInsights"
@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "application_cluster" {
 }
 
 resource "aws_ecs_task_definition" "application_task" {
-  family                   = "image-recognition-task"
+  family                   = "image-recognition-task-${var.environment}"
   network_mode             = "awsvpc"
   memory                   = 3072
   cpu                      = 1024
@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "application_task" {
 }
 
 resource "aws_security_group" "ecs_service_sg" {
-  name        = "image-recognition-ecs-service-sg"
+  name        = "image-recognition-ecs-service-sg-${var.environment}"
   description = "Security group for ECS Service"
   vpc_id      = var.vpc_id
 }
@@ -83,7 +83,7 @@ resource "aws_vpc_security_group_egress_rule" "ecs_service_all_outbound" {
 }
 
 resource "aws_ecs_service" "application_service" {
-  name            = "image-recognition-service"
+  name            = "image-recognition-service-${var.environment}"
   cluster         = aws_ecs_cluster.application_cluster.id
   task_definition = aws_ecs_task_definition.application_task.arn
   launch_type     = "FARGATE"

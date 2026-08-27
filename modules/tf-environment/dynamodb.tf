@@ -1,7 +1,7 @@
 # tfsec:ignore:aws-dynamodb-table-customer-key
 # AWS-managed encryption is sufficient for this training environment.
 resource "aws_dynamodb_table" "recognition_results" {
-  name           = "recognition-results"
+  name           = "recognition-results-${var.environment}"
   billing_mode   = "PROVISIONED"
   read_capacity  = 5
   write_capacity = 5
@@ -25,6 +25,11 @@ resource "aws_dynamodb_table" "recognition_results" {
   attribute {
     name = "LabelValue"
     type = "S"
+  }
+
+  tags = {
+    Environment = var.environment
+    Component   = "database"
   }
 
   global_secondary_index {

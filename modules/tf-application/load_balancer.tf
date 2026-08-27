@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb_sg" {
-  name        = "image-recognition-alb-sg"
+  name        = "image-recognition-alb-sg-${var.environment}"
   description = "Security group for Application Load Balancer"
   vpc_id      = var.vpc_id
 }
@@ -32,7 +32,7 @@ resource "aws_lb" "application_lb" {
   #checkov:skip=CKV2_AWS_20:HTTPS and ACM are outside the scope of this training environment.
   #checkov:skip=CKV2_AWS_28:AWS WAF is outside the scope of this training environment.
 
-  name               = "image-recognition-alb"
+  name               = "image-recognition-alb-${var.environment}"
   internal           = false #tfsec:ignore:aws-elb-alb-not-public
   load_balancer_type = "application"
 
@@ -47,7 +47,7 @@ resource "aws_lb" "application_lb" {
 resource "aws_lb_target_group" "application_target_group" {
   #checkov:skip=CKV_AWS_378:HTTP between ALB and ECS is acceptable for this training environment.
 
-  name        = "image-recognition-tg"
+  name        = "image-recognition-tg-${var.environment}"
   port        = var.application_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id

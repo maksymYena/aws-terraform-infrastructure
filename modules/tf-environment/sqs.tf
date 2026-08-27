@@ -4,6 +4,10 @@ resource "aws_sqs_queue" "image_queue" {
   fifo_queue                 = false
   visibility_timeout_seconds = 180
   sqs_managed_sse_enabled    = true
+  tags = {
+    Environment = var.environment
+    Component   = "messaging-queue"
+  }
 }
 
 resource "aws_sqs_queue_policy" "image_queue_policy" {

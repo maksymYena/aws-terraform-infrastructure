@@ -38,3 +38,8 @@ variable "sqs_queue_arn" {
   type        = string
   description = "ARN of the SQS queue used as Lambda event source"
 }
+
+variable "environment" {
+  description = "Environment name"
+  type        = string
+}

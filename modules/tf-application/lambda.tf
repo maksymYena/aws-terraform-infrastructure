@@ -5,7 +5,7 @@ resource "aws_lambda_function" "image_recognition" {
   #checkov:skip=CKV_AWS_115:Reserved concurrency is not required for this training workload.
   #checkov:skip=CKV_AWS_117:Lambda VPC placement is outside the scope of this training architecture.
 
-  function_name = "image-recognition-lambda"
+  function_name = "image-recognition-lambda-${var.environment}"
 
   role     = aws_iam_role.lambda_role.arn
   filename = data.archive_file.lambda_zip.output_path

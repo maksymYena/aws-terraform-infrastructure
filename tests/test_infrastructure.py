@@ -6,15 +6,16 @@ import pytest
 
 AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
 AWS_PROFILE = os.getenv("AWS_PROFILE", "terraform-dev")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
 
-BUCKET_NAME = "maksym-yena-image-bucket-dev"
-DYNAMODB_TABLE_NAME = "recognition-results"
-SQS_QUEUE_NAME = "image-queue-dev"
-SNS_TOPIC_NAME = "image-notification-dev"
-LAMBDA_FUNCTION_NAME = "image-recognition-lambda"
-ECS_CLUSTER_NAME = "image-recognition-cluster"
-ECS_SERVICE_NAME = "image-recognition-service"
-ALB_NAME = "image-recognition-alb"
+BUCKET_NAME = f"maksym-yena-image-bucket-{ENVIRONMENT}"
+DYNAMODB_TABLE_NAME = f"recognition-results-{ENVIRONMENT}"
+SQS_QUEUE_NAME = f"image-queue-{ENVIRONMENT}"
+SNS_TOPIC_NAME = f"image-notification-{ENVIRONMENT}"
+LAMBDA_FUNCTION_NAME = f"image-recognition-lambda-{ENVIRONMENT}"
+ECS_CLUSTER_NAME = f"image-recognition-cluster-{ENVIRONMENT}"
+ECS_SERVICE_NAME = f"image-recognition-service-{ENVIRONMENT}"
+ALB_NAME = f"image-recognition-alb-{ENVIRONMENT}"
 
 
 @pytest.fixture(scope="session")

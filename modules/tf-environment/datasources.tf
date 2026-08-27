@@ -142,9 +142,4 @@ data "aws_iam_policy_document" "sqs_queue_policy" {
   }
 }
 
-
-data "aws_vpc" "default" {
-  default = true
-}
-
 data "aws_region" "current" {}

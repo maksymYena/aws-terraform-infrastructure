@@ -1,18 +1,16 @@
 # Terraform
 **/.terraform/*
+**/providers/*
 *.tfstate
 *.tfstate.*
 *.tfplan
+tfplan
+destroy.tfplan
 crash.log
 crash.*.log
 
-# Terraform generated plans
-tfplan
-destroy.tfplan
-lambda_function_payload.zip
-
 # Generated Lambda package
-lambda_function_payload.zipó
+lambda_function_payload.zip
 
 # Terraform variable files with secrets
 *.tfvars

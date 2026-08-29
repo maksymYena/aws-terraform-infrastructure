@@ -35,6 +35,54 @@ resource "aws_iam_role" "ecs_task_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_execution_assume_role.json
 }
 
+resource "aws_iam_role_policy" "ecs_s3_write_access" {
+  name = "ecs-s3-write-access-${var.environment}"
+  role = aws_iam_role.ecs_task_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+
+        Resource = "arn:aws:s3:::${var.bucket_name}/*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "ecs_dynamodb_read_access" {
+  name = "ecs-dynamodb-read-access-${var.environment}"
+  role = aws_iam_role.ecs_task_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:Query",
+          "dynamodb:Scan"
+        ]
+
+        Resource = [
+          "arn:aws:dynamodb:${var.region_name}:888840134536:table/${var.dynamodb_name}",
+          "arn:aws:dynamodb:${var.region_name}:888840134536:table/${var.dynamodb_name}/index/*"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_policy_attachment" "ecs_s3_access" {
   name       = "ecs-s3-access-${var.environment}"
   roles      = [aws_iam_role.ecs_task_role.name]

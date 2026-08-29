@@ -6,7 +6,7 @@ import pytest
 
 AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
 AWS_PROFILE = os.getenv("AWS_PROFILE", "terraform-dev")
-ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "prod")
 
 BUCKET_NAME = f"maksym-yena-image-bucket-{ENVIRONMENT}"
 DYNAMODB_TABLE_NAME = f"recognition-results-{ENVIRONMENT}"

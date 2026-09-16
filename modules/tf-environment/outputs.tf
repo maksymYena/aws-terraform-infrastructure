@@ -25,3 +25,7 @@ output "sqs_queue_arn" {
 output "ecr_repository_url" {
   value = aws_ecr_repository.image_recognition.repository_url
 }
+
+output "deployment_artifacts_bucket_name" {
+  value = aws_s3_bucket.deployment_artifacts.bucket
+}

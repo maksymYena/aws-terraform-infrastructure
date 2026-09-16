@@ -5,7 +5,7 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_policy" "lambda_policy" {
-   name = "image-recognition-lambda-policy-${var.environment}"
+  name   = "image-recognition-lambda-policy-${var.environment}"
   policy = data.aws_iam_policy_document.lambda_permissions.json
 }
 

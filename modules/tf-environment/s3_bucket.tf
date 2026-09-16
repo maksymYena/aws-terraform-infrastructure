@@ -91,3 +91,41 @@ resource "aws_s3_bucket_notification" "image_notification" {
     aws_sns_topic_policy.image_notification_policy
   ]
 }
+
+resource "aws_s3_bucket" "deployment_artifacts" {
+  bucket = "maksym-yena-image-artifacts-${var.environment}"
+
+  force_destroy = true
+
+  tags = {
+    Name        = "image-recognition-artifacts-${var.environment}"
+    Environment = var.environment
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "deployment_artifacts" {
+  bucket = aws_s3_bucket.deployment_artifacts.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_versioning" "deployment_artifacts" {
+  bucket = aws_s3_bucket.deployment_artifacts.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "deployment_artifacts" {
+  bucket = aws_s3_bucket.deployment_artifacts.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}

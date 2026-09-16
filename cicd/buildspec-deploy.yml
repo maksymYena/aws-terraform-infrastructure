@@ -1,0 +1,38 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR"
+      - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+
+  build:
+    commands:
+      - echo "Building Docker image"
+      - docker build -t "$IMAGE_REPO_NAME" app
+
+      - echo "Tagging Docker image"
+      - docker tag "$IMAGE_REPO_NAME:latest" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest"
+
+      - echo "Packaging Lambda function"
+      - cd lambda
+      - zip ../lambda_function.zip index.py
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Pushing Docker image to ECR"
+      - docker push "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest"
+
+      - echo "Creating ECS image definitions"
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$ECS_CONTAINER_NAME" "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest" > imagedefinitions.json
+
+      - echo "Uploading Lambda artifact"
+      - aws s3 cp lambda_function.zip "s3://$S3_BUCKET_NAME/image-recognition-lambda/lambda_function.zip"
+
+      - echo "Updating Lambda function"
+      - aws lambda update-function-code --function-name "$LAMBDA_NAME" --s3-bucket "$S3_BUCKET_NAME" --s3-key image-recognition-lambda/lambda_function.zip
+
+artifacts:
+  files:
+    - imagedefinitions.json

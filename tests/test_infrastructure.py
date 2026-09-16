@@ -5,7 +5,7 @@ import pytest
 
 
 AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
-AWS_PROFILE = os.getenv("AWS_PROFILE", "terraform-dev")
+AWS_PROFILE = os.getenv("AWS_PROFILE")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "prod")
 
 BUCKET_NAME = f"maksym-yena-image-bucket-{ENVIRONMENT}"
@@ -20,10 +20,14 @@ ALB_NAME = f"image-recognition-alb-{ENVIRONMENT}"
 
 @pytest.fixture(scope="session")
 def aws_session():
-    return boto3.Session(
-        profile_name=AWS_PROFILE,
-        region_name=AWS_REGION,
-    )
+    session_kwargs = {
+        "region_name": AWS_REGION,
+    }
+
+    if AWS_PROFILE:
+        session_kwargs["profile_name"] = AWS_PROFILE
+
+    return boto3.Session(**session_kwargs)
 
 
 def test_s3_bucket_exists(aws_session):

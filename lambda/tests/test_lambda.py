@@ -1,6 +1,7 @@
 import importlib.util
 import json
 import os
+import sys
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -14,8 +15,9 @@ os.environ.setdefault("DYNAMODB_TABLE_NAME", "test-table")
 
 INDEX_PATH = Path(__file__).resolve().parents[1] / "index.py"
 
-spec = importlib.util.spec_from_file_location("lambda_index", INDEX_PATH)
+spec = importlib.util.spec_from_file_location("index", INDEX_PATH)
 index = importlib.util.module_from_spec(spec)
+sys.modules["index"] = index
 spec.loader.exec_module(index)
 
 

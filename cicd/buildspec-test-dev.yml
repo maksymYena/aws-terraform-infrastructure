@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - python -m pip install --upgrade pip
+      - pip install boto3 pytest requests
+
+  build:
+    commands:
+      - echo "Running DEV infrastructure tests"
+      - pytest tests/test_infrastructure.py -v
+
+      - echo "Running DEV deployed API tests"
+      - pytest tests/test_api_deployed.py -v

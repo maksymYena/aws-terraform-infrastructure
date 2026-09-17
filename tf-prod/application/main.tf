@@ -3,7 +3,7 @@ data "terraform_remote_state" "environment" {
 
   config = {
     bucket  = "maksym-yena-terraform-state"
-    key = "prod/environment.tfstate"
+    key     = "prod/environment.tfstate"
     region  = "eu-central-1"
     profile = "terraform-dev"
   }

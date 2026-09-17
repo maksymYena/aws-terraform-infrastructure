@@ -25,3 +25,7 @@ output "sqs_queue_arn" {
 output "ecr_repository_url" {
   value = module.environment.ecr_repository_url
 }
+
+output "deployment_artifacts_bucket_name" {
+  value = module.environment.deployment_artifacts_bucket_name
+}
